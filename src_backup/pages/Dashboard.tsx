@@ -1,0 +1,111 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { DashboardApi } from '../api/api.js';
+
+const FILTROS = [
+  { chave: null, label: 'Todos' },
+  { chave: 'Urgente', label: 'Urgente' },
+  { chave: 'PoucoUrgente', label: 'Moderado' },
+  { chave: 'NaoUrgente', label: 'Pouco urgente' }
+];
+
+export default function Dashboard() {
+  const [resumo, setResumo] = useState(null);
+  const [triagens, setTriagens] = useState([]);
+  const [filtro, setFiltro] = useState(null);
+  const [busca, setBusca] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('token')) {
+      navigate('/login');
+      return;
+    }
+    DashboardApi.resumo().then(({ data }) => setResumo(data));
+  }, []);
+
+  useEffect(() => {
+    DashboardApi.listarTriagens(filtro).then(({ data }) => setTriagens(data));
+  }, [filtro]);
+
+  const triagensFiltradas = triagens.filter((t) =>
+    t.pacienteNome.toLowerCase().includes(busca.toLowerCase())
+  );
+
+  return (
+    <div style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
+      <div className="topbar" style={{ borderRadius: 10, marginBottom: 20 }}>
+        <div>
+          <h1>TriagemFácil</h1>
+          <p>sistema de triagem inteligente</p>
+        </div>
+        <span style={{ fontSize: 13 }}>
+          {sessionStorage.getItem('nome')} — {sessionStorage.getItem('perfil')}
+        </span>
+      </div>
+
+      {resumo && (
+        <div className="kpi-row">
+          <div className="kpi"><div className="valor">{resumo.triagensHoje}</div><div className="label">Triagem hoje</div></div>
+          <div className="kpi"><div className="valor">{resumo.aguardando}</div><div className="label">Aguardando</div></div>
+          <div className="kpi"><div className="valor">{resumo.urgentes}</div><div className="label">Urgentes</div></div>
+          <div className="kpi"><div className="valor">{resumo.finalizados}</div><div className="label">Finalizados</div></div>
+        </div>
+      )}
+
+      <div className="card">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div>
+            {FILTROS.map((f) => (
+              <button
+                key={f.label}
+                className={`filtro-btn ${filtro === f.chave ? 'ativo' : ''}`}
+                onClick={() => setFiltro(f.chave)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar por nome..."
+            style={{ width: 200, margin: 0 }}
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+          />
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Horário</th>
+              <th>Sintoma principal</th>
+              <th>Prioridade</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {triagensFiltradas.map((t) => (
+              <tr key={t.id}>
+                <td>
+                  <strong>{t.pacienteNome}</strong>
+                  <br /><small>{t.pacienteIdade ? `${t.pacienteIdade} anos` : ''}</small>
+                </td>
+                <td>{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td>{t.principalSintoma ?? '—'}</td>
+                <td>{t.prioridade ? <span className={`badge ${t.prioridade}`}>{t.prioridade}</span> : '—'}</td>
+                <td>{t.status}</td>
+                <td><button className="filtro-btn">Ver</button></td>
+              </tr>
+            ))}
+            {triagensFiltradas.length === 0 && (
+              <tr><td colSpan={6} style={{ textAlign: 'center', color: '#90a4ae' }}>Nenhuma triagem encontrada.</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

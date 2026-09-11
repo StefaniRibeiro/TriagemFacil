@@ -1,0 +1,171 @@
+:root {
+  --azul-primario: #1565c0;
+  --azul-escuro: #0d47a1;
+  --azul-claro: #e3f2fd;
+  --verde: #2e7d32;
+  --amarelo: #f9a825;
+  --laranja: #ef6c00;
+  --vermelho: #c62828;
+  --cinza-texto: #37474f;
+  --cinza-fundo: #f5f7fa;
+  --branco: #ffffff;
+  --borda: #d7e0ea;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--cinza-fundo);
+  color: var(--cinza-texto);
+}
+
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--branco);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 24px rgba(0,0,0,0.06);
+}
+
+.topbar {
+  background: var(--azul-primario);
+  color: white;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar h1 { font-size: 16px; margin: 0; }
+.topbar p { font-size: 11px; margin: 0; opacity: 0.85; }
+
+.content { padding: 20px; flex: 1; }
+
+.card {
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+label { font-size: 13px; font-weight: 600; color: var(--cinza-texto); }
+small { color: #78909c; }
+
+button.primary {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: var(--azul-primario);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button.primary:hover { background: var(--azul-escuro); }
+button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
+
+.divider {
+  text-align: center;
+  color: #90a4ae;
+  font-size: 12px;
+  margin: 16px 0;
+  position: relative;
+}
+
+.help-box {
+  background: var(--azul-claro);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+}
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.bubble.chatbot { background: var(--azul-claro); align-self: flex-start; border-bottom-left-radius: 4px; }
+.bubble.paciente { background: var(--azul-primario); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+.chat-input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--borda);
+}
+.chat-input-bar input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--borda);
+}
+.chat-input-bar button {
+  border: none;
+  background: var(--azul-primario);
+  color: white;
+  border-radius: 20px;
+  padding: 0 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dashboard {
+  max-width: 100%;
+  margin: 0;
+}
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.kpi { background: var(--branco); border: 1px solid var(--borda); border-radius: 10px; padding: 12px; text-align: center; }
+.kpi .valor { font-size: 22px; font-weight: 700; color: var(--azul-primario); }
+.kpi .label { font-size: 11px; color: #78909c; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--borda); }
+th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercase; }
+
+.badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: white; }
+.badge.Emergente, .badge.MuitoUrgente { background: var(--vermelho); }
+.badge.Urgente { background: var(--amarelo); color: #333; }
+.badge.PoucoUrgente { background: var(--verde); }
+.badge.NaoUrgente { background: #1976d2; }
+
+.filtro-btn {
+  padding: 6px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--borda);
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  margin-right: 6px;
+}
+.filtro-btn.ativo { background: var(--azul-primario); color: white; border-color: var(--azul-primario); }
