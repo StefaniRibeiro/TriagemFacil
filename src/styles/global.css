@@ -154,7 +154,8 @@ th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--bor
 th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercase; }
 
 .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: white; }
-.badge.Emergente, .badge.MuitoUrgente { background: var(--vermelho); }
+.badge.Emergente { background: var(--vermelho); }
+.badge.MuitoUrgente { background: var(--laranja); }
 .badge.Urgente { background: var(--amarelo); color: #333; }
 .badge.PoucoUrgente { background: var(--verde); }
 .badge.NaoUrgente { background: #1976d2; }

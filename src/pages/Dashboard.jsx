@@ -4,10 +4,20 @@ import { DashboardApi } from '../api/api.js';
 
 const FILTROS = [
   { chave: null, label: 'Todos' },
+  { chave: 'Emergente', label: 'Emergente' },
+  { chave: 'MuitoUrgente', label: 'Muito urgente' },
   { chave: 'Urgente', label: 'Urgente' },
   { chave: 'PoucoUrgente', label: 'Moderado' },
   { chave: 'NaoUrgente', label: 'Pouco urgente' }
 ];
+
+const ROTULOS_PRIORIDADE = {
+  Emergente: 'Vermelho — Emergente',
+  MuitoUrgente: 'Laranja — Muito urgente',
+  Urgente: 'Amarelo — Urgente',
+  PoucoUrgente: 'Verde — Pouco urgente',
+  NaoUrgente: 'Azul — Não urgente'
+};
 
 export default function Dashboard() {
   const [resumo, setResumo] = useState(null);
@@ -21,11 +31,17 @@ export default function Dashboard() {
       navigate('/login');
       return;
     }
-    DashboardApi.resumo().then(({ data }) => setResumo(data));
-  }, []);
+    const carregarResumo = () => DashboardApi.resumo().then(({ data }) => setResumo(data));
+    carregarResumo();
+    const atualizacao = setInterval(carregarResumo, 10000);
+    return () => clearInterval(atualizacao);
+  }, [navigate]);
 
   useEffect(() => {
-    DashboardApi.listarTriagens(filtro).then(({ data }) => setTriagens(data));
+    const carregarTriagens = () => DashboardApi.listarTriagens(filtro).then(({ data }) => setTriagens(data));
+    carregarTriagens();
+    const atualizacao = setInterval(carregarTriagens, 10000);
+    return () => clearInterval(atualizacao);
   }, [filtro]);
 
   const triagensFiltradas = triagens.filter((t) =>
@@ -81,7 +97,7 @@ export default function Dashboard() {
               <th>Paciente</th>
               <th>Horário</th>
               <th>Sintoma principal</th>
-              <th>Prioridade</th>
+              <th>Classificação sugerida</th>
               <th>Status</th>
               <th>Ação</th>
             </tr>
@@ -95,8 +111,13 @@ export default function Dashboard() {
                 </td>
                 <td>{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
                 <td>{t.principalSintoma ?? '—'}</td>
-                <td>{t.prioridade ? <span className={`badge ${t.prioridade}`}>{t.prioridade}</span> : '—'}</td>
-                <td>{t.status}</td>
+                <td>
+                  {t.prioridade ? <>
+                    <span className={`badge ${t.prioridade}`}>{ROTULOS_PRIORIDADE[t.prioridade] ?? t.prioridade}</span>
+                    {t.status === 'EmAndamento' && <><br /><small>Preliminar — validar</small></>}
+                  </> : 'Aguardando dados'}
+                </td>
+                <td>{t.status === 'EmAndamento' ? 'Em triagem' : t.status}</td>
                 <td><button className="filtro-btn">Ver</button></td>
               </tr>
             ))}
