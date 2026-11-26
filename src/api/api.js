@@ -1,100 +1,81 @@
-// src/api/api.js – mocked API layer for development without a backend
+// src/api/api.js — camada de comunicação com o back-end (SistemaTriagem.Api)
 import axios from 'axios';
 
-// Keep the axios instance for possible real calls later (e.g., when the backend is ready)
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
 });
 
-// Attach token if present – still useful for auth‑protected routes when backend exists
+// Anexa o token JWT em todas as requisições autenticadas
 api.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Helper to quickly create a mock response
-function mockResponse(data) {
-  return Promise.resolve({ data });
-}
+// ─────────────────────────────────────────────────────────────
+// Autenticação — POST /api/auth/login
+// Retorno: { token, nome, perfil }
+// ─────────────────────────────────────────────────────────────
+export const AuthApi = {
+  login: (login, senha) =>
+    api.post('/auth/login', { login, senha }),
+};
 
+// ─────────────────────────────────────────────────────────────
+// Paciente — POST /api/paciente/identificar
+// Retorno: { pacienteId, triagemId, dados: { nome, cpf, cns, ... } }
+// ─────────────────────────────────────────────────────────────
 export const PacienteApi = {
-  // Mock: always return a successful identification with dummy patient info
   identificar: (cpf, cns) =>
-    mockResponse({
-      paciente: {
-        nome: 'João da Silva',
-        idade: 35,
-        cpf,
-        cns,
-        risco: 'baixo',
-      },
-      mensagem: 'Identificação simulada com sucesso',
-    }),
+    api.post('/paciente/identificar', { cpf: cpf || null, cns: cns || null }),
 };
 
+// ─────────────────────────────────────────────────────────────
+// Chatbot
+//   POST /api/chatbot/mensagem         → envia mensagem do paciente
+//   GET  /api/chatbot/{triagemId}/historico → busca histórico
+//
+// Retorno enviarMensagem: { respostaChatbot, mensagemPacienteId, mensagemChatbotId }
+// Retorno historico: [ { origem, conteudo, timestamp }, ... ]
+// ─────────────────────────────────────────────────────────────
 export const ChatbotApi = {
-  // Mock chat flow – echo the sent content and generate a fake reply
   enviarMensagem: (triagemId, conteudo) =>
-    mockResponse({
-      triagemId,
-      mensagem: `Eco da mensagem: ${conteudo}`,
-      resposta: 'Esta é uma resposta simulada do chatbot.',
-    }),
+    api.post('/chatbot/mensagem', { triagemId, conteudo }),
+
   historico: (triagemId) =>
-    mockResponse({
-      triagemId,
-      historico: [
-        { autor: 'paciente', texto: 'Olá' },
-        { autor: 'bot', texto: 'Como posso ajudar?' },
-      ],
-    }),
+    api.get(`/chatbot/${triagemId}/historico`),
 };
 
+// ─────────────────────────────────────────────────────────────
+// Triagem — POST /api/triagem/finalizar
+// Retorno: { triagemId, prioridadeSugerida, fluxoAutomacaoDisparado }
+// ─────────────────────────────────────────────────────────────
 export const TriagemApi = {
-  // Mock finalização – simply acknowledge the data
   finalizar: (triagemId, sintomas, observacoes) =>
-    mockResponse({
+    api.post('/triagem/finalizar', {
       triagemId,
-      status: 'finalizada',
       sintomas,
-      observacoes,
+      observacoes: observacoes || null,
     }),
 };
 
+// ─────────────────────────────────────────────────────────────
+// Dashboard (rotas protegidas — requer perfil ProfissionalSaude ou Admin)
+//   GET /api/dashboard/resumo          → { triagensHoje, aguardando, urgentes, finalizados }
+//   GET /api/dashboard/triagens        → lista de triagens (filtro opcional: ?prioridade=Urgente)
+//   GET /api/dashboard/triagens/{id}   → detalhes de uma triagem
+// ─────────────────────────────────────────────────────────────
 export const DashboardApi = {
   resumo: () =>
-    mockResponse({
-      totalTriagens: 12,
-      pendentes: 3,
-      emAtendimento: 4,
-      finalizadas: 5,
-    }),
-  listarTriagens: (prioridade) =>
-    mockResponse({
-      prioridade,
-      triagens: [
-        { id: 't1', paciente: 'Ana', prioridade: 'alta' },
-        { id: 't2', paciente: 'Carlos', prioridade: 'media' },
-      ],
-    }),
-  detalhes: (id) =>
-    mockResponse({
-      id,
-      paciente: 'Ana',
-      sintomas: ['febre', 'tosse'],
-      prioridade: 'alta',
-      status: 'em andamento',
-    }),
-};
+    api.get('/dashboard/resumo'),
 
-export const AuthApi = {
-  // Mock login – returns a dummy JWT token
-  login: (login, senha) =>
-    mockResponse({
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy.payload.signature',
-      usuario: { login, nome: 'Profissional de Saúde' },
+  listarTriagens: (prioridade) =>
+    api.get('/dashboard/triagens', {
+      params: prioridade ? { prioridade } : {},
     }),
+
+  detalhes: (id) =>
+    api.get(`/dashboard/triagens/${id}`),
 };
 
 export default api;
