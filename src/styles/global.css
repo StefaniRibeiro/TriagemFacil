@@ -267,12 +267,33 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
 }
 
 @media (min-width: 641px) {
+  /* No desktop, use a área disponível do navegador para as telas do paciente. */
+  .app-container {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-shadow: none;
+  }
+
+  .app-container:not(.chat-app) .content {
+    width: min(calc(100% - 64px), 960px);
+    margin: 0 auto;
+    padding: clamp(28px, 5vh, 56px) 0;
+  }
+
+  .app-container:not(.chat-app) .card,
+  .app-container:not(.chat-app) .help-box {
+    max-width: 720px;
+  }
+
   .chat-app {
-    width: min(calc(100% - 48px), 1040px);
-    max-width: 1040px;
+    width: 100%;
+    max-width: none;
     height: 100vh !important;
     height: 100dvh !important;
     min-height: 520px;
+    box-shadow: none;
   }
 
   .chat-app .topbar { padding: 18px 28px; }
