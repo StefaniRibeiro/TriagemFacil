@@ -7,6 +7,7 @@ const MENSAGENS_FINAIS = new Set([
   'Sua triagem foi concluída. Aguarde chamar pelo seu nome'
 ]);
 const PREFIXO_MENSAGEM_COLETA_CONCLUIDA = 'Já registrei as informações principais.';
+const PREFIXO_ERRO_MODELO = 'Não foi possível continuar a conversa com o assistente.';
 
 export default function Chatbot() {
   const { triagemId } = useParams();
@@ -32,7 +33,10 @@ export default function Chatbot() {
     ChatbotApi.historico(triagemId).then(({ data }) => {
       setMensagens(data);
       setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && MENSAGENS_FINAIS.has(m.conteudo)));
-      setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo.startsWith(PREFIXO_MENSAGEM_COLETA_CONCLUIDA)));
+      setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && (
+        m.conteudo.startsWith(PREFIXO_MENSAGEM_COLETA_CONCLUIDA) ||
+        m.conteudo.startsWith(PREFIXO_ERRO_MODELO)
+      )));
     });
   }, [triagemId, state?.mensagemInicial]);
 
@@ -55,9 +59,10 @@ export default function Chatbot() {
         { origem: 'Chatbot', conteudo: data.respostaChatbot, timestamp: new Date() }
       ]);
     } catch {
+      setColetaConcluida(true);
       setMensagens((prev) => [
         ...prev,
-        { origem: 'Chatbot', conteudo: 'Desculpe, houve um problema. Um atendente pode te ajudar.', timestamp: new Date() }
+        { origem: 'Chatbot', conteudo: 'O assistente encontrou um erro. Você pode concluir a triagem com as informações registradas ou pedir ajuda a um atendente.', timestamp: new Date() }
       ]);
     } finally {
       setEnviando(false);
@@ -133,7 +138,7 @@ export default function Chatbot() {
         {triagemConcluida ? (
           <button className="primary" onClick={() => navigate('/')}>Voltar ao início</button>
         ) : (
-          <button className="primary" onClick={finalizarTriagem} disabled={finalizando || enviando || mensagens.length < 2}>
+          <button className="primary" onClick={finalizarTriagem} disabled={finalizando || enviando || !coletaConcluida}>
             {finalizando ? 'Finalizando...' : 'Concluir triagem'}
           </button>
         )}
