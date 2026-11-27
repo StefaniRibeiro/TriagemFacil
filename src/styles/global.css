@@ -375,7 +375,7 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
 }
 .badge.Emergente { background: var(--vermelho); }
 .badge.MuitoUrgente { background: var(--laranja); }
-.badge.Urgente { background: var(--amarelo); color: #333; }
+.badge.Urgente { background: #ffeb3b; color: #333; }
 .badge.PoucoUrgente { background: var(--verde); }
 .badge.NaoUrgente { background: #1976d2; }
 
