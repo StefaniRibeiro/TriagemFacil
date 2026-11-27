@@ -5,7 +5,7 @@ import LogoutButton from '../components/LogoutButton.jsx';
 
 const FILTROS = [
   { chave: null, label: 'Todos' },
-  { chave: 'Emergente', label: 'Emergente' },
+  { chave: 'Emergente', label: 'Emergência' },
   { chave: 'MuitoUrgente', label: 'Muito urgente' },
   { chave: 'Urgente', label: 'Urgente' },
   { chave: 'PoucoUrgente', label: 'Moderado' },
@@ -13,7 +13,7 @@ const FILTROS = [
 ];
 
 const ROTULOS_PRIORIDADE = {
-  Emergente: 'Vermelho — Emergente',
+  Emergente: 'Vermelho — Emergência',
   MuitoUrgente: 'Laranja — Muito urgente',
   Urgente: 'Amarelo — Urgente',
   PoucoUrgente: 'Verde — Pouco urgente',

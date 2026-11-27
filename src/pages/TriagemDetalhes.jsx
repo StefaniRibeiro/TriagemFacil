@@ -4,7 +4,7 @@ import { DashboardApi } from '../api/api.js';
 import LogoutButton from '../components/LogoutButton.jsx';
 
 const ROTULOS_PRIORIDADE = {
-  Emergente: 'Vermelho — Emergente',
+  Emergente: 'Vermelho — Emergência',
   MuitoUrgente: 'Laranja — Muito urgente',
   Urgente: 'Amarelo — Urgente',
   PoucoUrgente: 'Verde — Pouco urgente',
