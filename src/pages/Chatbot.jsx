@@ -119,7 +119,7 @@ export default function Chatbot() {
         <button onClick={() => enviar(texto)} disabled={enviando || triagemConcluida || coletaConcluida}>Enviar</button>
       </div>
 
-      <div style={{ padding: '0 16px 16px' }}>
+      <div className="chat-actions" style={{ padding: '0 16px 16px' }}>
         {triagemConcluida ? (
           <button className="primary" onClick={() => navigate('/')}>Voltar ao início</button>
         ) : (

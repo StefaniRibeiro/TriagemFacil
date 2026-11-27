@@ -266,6 +266,27 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
   .chat-app { height: 100dvh !important; }
 }
 
+@media (min-width: 641px) {
+  .chat-app {
+    width: min(calc(100% - 48px), 1040px);
+    max-width: 1040px;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 520px;
+  }
+
+  .chat-app .topbar { padding: 18px 28px; }
+  .chat-app .topbar h1 { font-size: 20px; }
+  .chat-app .topbar p { font-size: 13px; }
+  .chat-window { padding: 24px clamp(24px, 4vw, 44px); gap: 14px; }
+  .bubble { max-width: min(72%, 760px); padding: 13px 18px; font-size: 15px; }
+  .chat-input-bar { padding: 16px 28px; gap: 12px; }
+  .chat-input-bar input { min-width: 0; font-size: 16px; }
+  .chat-input-bar button { padding: 0 24px; }
+  .chat-actions { padding: 0 28px 24px !important; }
+  .chat-actions .primary { max-width: 300px; margin-left: auto; }
+}
+
 @media (max-width: 640px) {
   .app-container { min-height: 100vh; min-height: 100svh; }
 
