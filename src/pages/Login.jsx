@@ -27,19 +27,48 @@ export default function Login() {
 
   return (
     <div className="app-container professional-login-page">
-      <div className="topbar"><h1>TriagemFácil — Acesso Profissional</h1></div>
-      <div className="content">
-        <div className="card">
-          <label>Usuário</label>
-          <input type="text" value={login} onChange={(e) => setLogin(e.target.value)} />
-          <label style={{ marginTop: 12, display: 'block' }}>Senha</label>
-          <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)}
-                 onKeyDown={(e) => e.key === 'Enter' && entrar()} />
-          {erro && <p style={{ color: 'var(--vermelho)', fontSize: 13, marginTop: 10 }}>{erro}</p>}
-          <button className="primary" onClick={entrar} disabled={carregando}>
-            {carregando ? 'Entrando...' : 'Entrar'}
-          </button>
+      <div className="topbar">
+        <div>
+          <h1>TriagemFácil</h1>
+          <p>Área profissional</p>
         </div>
+        <a className="login-home-link" href="/">Voltar ao início</a>
+      </div>
+      <div className="content">
+        <section className="card professional-login-card" aria-labelledby="login-title">
+          <div className="login-intro">
+            <span className="login-eyebrow">ACESSO DA EQUIPE DE SAÚDE</span>
+            <h2 id="login-title">Bem-vindo(a)!</h2>
+            <p>Entre com suas credenciais para acompanhar as triagens.</p>
+          </div>
+
+          <form className="professional-login-form" onSubmit={(e) => { e.preventDefault(); entrar(); }}>
+            <label htmlFor="professional-login">Usuário</label>
+            <input
+              id="professional-login"
+              type="text"
+              autoComplete="username"
+              placeholder="Digite seu usuário"
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
+            />
+
+            <label htmlFor="professional-password">Senha</label>
+            <input
+              id="professional-password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+
+            {erro && <p className="login-error" role="alert">{erro}</p>}
+            <button className="primary" type="submit" disabled={carregando}>
+              {carregando ? 'Entrando...' : 'Entrar no painel'}
+            </button>
+          </form>
+        </section>
       </div>
     </div>
   );
