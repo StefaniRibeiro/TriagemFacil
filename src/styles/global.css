@@ -184,7 +184,19 @@ table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--borda); }
 th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercase; }
 
-.badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; color: white; }
+.badge {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: white;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: middle;
+}
 .badge.Emergente { background: var(--vermelho); }
 .badge.MuitoUrgente { background: var(--laranja); }
 .badge.Urgente { background: var(--amarelo); color: #333; }
