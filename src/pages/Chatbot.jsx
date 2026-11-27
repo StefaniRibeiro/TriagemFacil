@@ -84,7 +84,7 @@ export default function Chatbot() {
   }
 
   return (
-    <div className="app-container" style={{ height: '100vh' }}>
+    <div className="app-container chat-app" style={{ height: '100vh' }}>
       <div className="topbar">
         <div>
           <h1>Assistente de triagem</h1>

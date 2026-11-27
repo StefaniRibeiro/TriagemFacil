@@ -49,7 +49,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
+    <main className="dashboard-page">
       <div className="topbar" style={{ borderRadius: 10, marginBottom: 20 }}>
         <div>
           <h1>TriagemFácil</h1>
@@ -70,8 +70,8 @@ export default function Dashboard() {
       )}
 
       <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <div>
+        <div className="dashboard-toolbar">
+          <div className="dashboard-filter-list">
             {FILTROS.map((f) => (
               <button
                 key={f.label}
@@ -85,12 +85,13 @@ export default function Dashboard() {
           <input
             type="text"
             placeholder="Buscar por nome..."
-            style={{ width: 200, margin: 0 }}
+            className="dashboard-search"
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
           />
         </div>
 
+        <div className="dashboard-table-wrap">
         <table>
           <thead>
             <tr>
@@ -105,20 +106,20 @@ export default function Dashboard() {
           <tbody>
             {triagensFiltradas.map((t) => (
               <tr key={t.id}>
-                <td>
+                <td data-label="Paciente">
                   <strong>{t.pacienteNome}</strong>
                   <br /><small>{t.pacienteIdade ? `${t.pacienteIdade} anos` : ''}</small>
                 </td>
-                <td>{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
-                <td>{t.principalSintoma ?? '—'}</td>
-                <td>
+                <td data-label="Horário">{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td data-label="Sintoma">{t.principalSintoma ?? '—'}</td>
+                <td data-label="Classificação sugerida">
                   {t.prioridade ? <>
                     <span className={`badge ${t.prioridade}`}>{ROTULOS_PRIORIDADE[t.prioridade] ?? t.prioridade}</span>
                     {t.status === 'EmAndamento' && <><br /><small>Preliminar — validar</small></>}
                   </> : 'Aguardando dados'}
                 </td>
-                <td>{t.status === 'EmAndamento' ? 'Em triagem' : t.status}</td>
-                <td><button className="filtro-btn">Ver</button></td>
+                <td data-label="Status">{t.status === 'EmAndamento' ? 'Em triagem' : t.status}</td>
+                <td data-label="Ação"><button className="filtro-btn">Ver</button></td>
               </tr>
             ))}
             {triagensFiltradas.length === 0 && (
@@ -126,7 +127,8 @@ export default function Dashboard() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
