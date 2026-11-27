@@ -26,7 +26,7 @@ export default function Login() {
   }
 
   return (
-    <div className="app-container">
+    <div className="app-container professional-login-page">
       <div className="topbar"><h1>TriagemFácil — Acesso Profissional</h1></div>
       <div className="content">
         <div className="card">

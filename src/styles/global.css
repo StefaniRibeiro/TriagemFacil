@@ -282,10 +282,46 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
     padding: clamp(28px, 5vh, 56px) 0;
   }
 
-  .app-container:not(.chat-app) .card,
-  .app-container:not(.chat-app) .help-box {
-    max-width: 720px;
+  .patient-start-page .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .patient-start-page .content > h2,
+  .patient-start-page .content > p,
+  .patient-start-page .card,
+  .patient-start-page .help-box {
+    width: min(100%, 720px);
+  }
+
+  .professional-access {
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .professional-access:hover { background: rgba(255, 255, 255, 0.14); }
+  .mobile-professional-access { display: none; }
+
+  .professional-login-page .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .professional-login-page .card {
+    width: min(100%, 480px);
+  }
+
+  .patient-start-page .topbar,
+  .professional-login-page .topbar { padding: 14px clamp(24px, 4vw, 56px); }
+
+  .patient-start-page .content > h2 { margin-top: 0; }
+  .patient-start-page .content > p:nth-last-of-type(2) { margin: 14px 0 0; }
 
   .chat-app {
     width: 100%;
@@ -312,6 +348,8 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
   .app-container { min-height: 100vh; min-height: 100svh; }
 
   .content { padding: 16px; }
+
+  .desktop-professional-access { display: none; }
 
   .chat-app {
     height: 100vh !important;

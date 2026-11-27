@@ -33,12 +33,15 @@ export default function Identificacao() {
   }
 
   return (
-    <div className="app-container">
+    <div className="app-container patient-start-page">
       <div className="topbar">
         <div>
           <h1>TriagemFácil</h1>
           <p>sistema de triagem inteligente</p>
         </div>
+        <a className="professional-access desktop-professional-access" href="/login">
+          Acesso do profissional
+        </a>
       </div>
 
       <div className="content">
@@ -86,7 +89,7 @@ export default function Identificacao() {
           Seus dados são protegidos e utilizados apenas para fins de atendimento.
         </p>
 
-        <p style={{ textAlign: 'center', marginTop: 12 }}>
+        <p className="mobile-professional-access" style={{ textAlign: 'center', marginTop: 12 }}>
           <a href="/login" style={{ fontSize: 12, color: '#78909c' }}>Acesso do profissional de saúde</a>
         </p>
       </div>
