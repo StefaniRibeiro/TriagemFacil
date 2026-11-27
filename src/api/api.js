@@ -61,7 +61,7 @@ export const TriagemApi = {
 
 // ─────────────────────────────────────────────────────────────
 // Dashboard (rotas protegidas — requer perfil ProfissionalSaude ou Admin)
-//   GET /api/dashboard/resumo          → { triagensHoje, aguardando, urgentes, finalizados }
+//   GET /api/dashboard/resumo          → { triagensHoje, aguardando, urgentes, atendidas }
 //   GET /api/dashboard/triagens        → lista de triagens (filtro opcional: ?prioridade=Urgente)
 //   GET /api/dashboard/triagens/{id}   → detalhes de uma triagem
 // ─────────────────────────────────────────────────────────────
@@ -76,6 +76,9 @@ export const DashboardApi = {
 
   detalhes: (id) =>
     api.get(`/dashboard/triagens/${id}`),
+
+  atualizarStatus: (id, status) =>
+    api.patch(`/dashboard/triagens/${id}/status`, { status }),
 };
 
 export default api;

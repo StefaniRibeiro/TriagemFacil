@@ -20,6 +20,14 @@ const ROTULOS_PRIORIDADE = {
   NaoUrgente: 'Azul — Não urgente'
 };
 
+const ROTULOS_STATUS = {
+  EmAndamento: 'Em triagem',
+  Finalizada: 'Aguardando atendimento',
+  EmAtendimento: 'Em atendimento',
+  Atendida: 'Atendida',
+  Cancelada: 'Cancelada'
+};
+
 export default function Dashboard() {
   const [resumo, setResumo] = useState(null);
   const [triagens, setTriagens] = useState([]);
@@ -107,9 +115,9 @@ export default function Dashboard() {
       {resumo && (
         <div className="kpi-row">
           <div className="kpi"><div className="valor">{resumo.triagensHoje}</div><div className="label">Triagem hoje</div></div>
-          <div className="kpi"><div className="valor">{resumo.aguardando}</div><div className="label">Aguardando</div></div>
+          <div className="kpi"><div className="valor">{resumo.aguardando}</div><div className="label">Aguardando atendimento</div></div>
           <div className="kpi"><div className="valor">{resumo.urgentes}</div><div className="label">Urgentes</div></div>
-          <div className="kpi"><div className="valor">{resumo.finalizados}</div><div className="label">Finalizados</div></div>
+          <div className="kpi"><div className="valor">{resumo.atendidas}</div><div className="label">Atendidas</div></div>
         </div>
       )}
 
@@ -162,7 +170,7 @@ export default function Dashboard() {
                     {t.status === 'EmAndamento' && <><br /><small>Preliminar — validar</small></>}
                   </> : 'Aguardando dados'}
                 </td>
-                <td data-label="Status">{t.status === 'EmAndamento' ? 'Em triagem' : t.status}</td>
+                <td data-label="Status">{ROTULOS_STATUS[t.status] ?? t.status}</td>
                 <td data-label="Ação">
                   <button
                     className="filtro-btn"

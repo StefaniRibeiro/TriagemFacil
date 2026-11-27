@@ -13,8 +13,18 @@ const ROTULOS_PRIORIDADE = {
 
 const ROTULOS_STATUS = {
   EmAndamento: 'Em triagem',
-  Finalizada: 'Finalizada',
+  Finalizada: 'Aguardando atendimento',
+  EmAtendimento: 'Em atendimento',
+  Atendida: 'Atendida',
   Cancelada: 'Cancelada'
+};
+
+const OPCOES_STATUS = {
+  EmAndamento: ['EmAndamento', 'Cancelada'],
+  Finalizada: ['Finalizada', 'EmAtendimento', 'Atendida', 'Cancelada'],
+  EmAtendimento: ['EmAtendimento', 'Finalizada', 'Atendida', 'Cancelada'],
+  Atendida: ['Atendida', 'EmAtendimento', 'Finalizada', 'Cancelada'],
+  Cancelada: ['Cancelada', 'Finalizada', 'EmAtendimento', 'Atendida']
 };
 
 function formatarData(data) {
@@ -31,6 +41,10 @@ export default function TriagemDetalhes() {
   const [triagem, setTriagem] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
+  const [statusSelecionado, setStatusSelecionado] = useState('');
+  const [salvandoStatus, setSalvandoStatus] = useState(false);
+  const [mensagemStatus, setMensagemStatus] = useState('');
+  const [erroStatus, setErroStatus] = useState('');
 
   useEffect(() => {
     if (!sessionStorage.getItem('token')) {
@@ -41,7 +55,10 @@ export default function TriagemDetalhes() {
     let ativo = true;
     DashboardApi.detalhes(triagemId)
       .then(({ data }) => {
-        if (ativo) setTriagem(data);
+        if (ativo) {
+          setTriagem(data);
+          setStatusSelecionado(data.status);
+        }
       })
       .catch((e) => {
         if (!ativo) return;
@@ -60,6 +77,25 @@ export default function TriagemDetalhes() {
 
     return () => { ativo = false; };
   }, [triagemId, navigate]);
+
+  async function salvarStatus() {
+    if (!statusSelecionado || statusSelecionado === triagem?.status || salvandoStatus) return;
+    setSalvandoStatus(true);
+    setErroStatus('');
+    setMensagemStatus('');
+    try {
+      const { data } = await DashboardApi.atualizarStatus(triagemId, statusSelecionado);
+      setTriagem((atual) => ({ ...atual, status: data.status }));
+      setStatusSelecionado(data.status);
+      setMensagemStatus('Status atualizado.');
+    } catch (e) {
+      setErroStatus(typeof e.response?.data === 'string'
+        ? e.response.data
+        : 'Não foi possível atualizar o status. Tente novamente.');
+    } finally {
+      setSalvandoStatus(false);
+    }
+  }
 
   return (
     <main className="dashboard-page">
@@ -95,6 +131,27 @@ export default function TriagemDetalhes() {
             <div>
               <span className="detail-label">Status</span>
               <strong>{ROTULOS_STATUS[triagem.status] ?? triagem.status}</strong>
+              <label className="detail-status-label" htmlFor="triagem-status">Alterar status</label>
+              <select
+                id="triagem-status"
+                className="detail-status-select"
+                value={statusSelecionado}
+                onChange={(e) => { setStatusSelecionado(e.target.value); setMensagemStatus(''); setErroStatus(''); }}
+              >
+                {(OPCOES_STATUS[triagem.status] ?? [triagem.status]).map((status) => (
+                  <option key={status} value={status}>{ROTULOS_STATUS[status] ?? status}</option>
+                ))}
+              </select>
+              <button
+                className="detail-status-save"
+                type="button"
+                onClick={salvarStatus}
+                disabled={salvandoStatus || statusSelecionado === triagem.status}
+              >
+                {salvandoStatus ? 'Salvando...' : 'Salvar status'}
+              </button>
+              {mensagemStatus && <small className="status-feedback success" role="status">{mensagemStatus}</small>}
+              {erroStatus && <small className="status-feedback error" role="alert">{erroStatus}</small>}
             </div>
             <div>
               <span className="detail-label">Iniciada em</span>

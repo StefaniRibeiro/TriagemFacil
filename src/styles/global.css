@@ -279,6 +279,37 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
   align-items: start;
 }
 .detail-summary > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.detail-status-label { color: #607d8b; font-size: 12px; margin-top: 4px; }
+.detail-status-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  margin: 0;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: white;
+  color: var(--cinza-texto);
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 13px;
+}
+.detail-status-save {
+  min-height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--azul-primario);
+  color: white;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.detail-status-save:hover:not(:disabled) { background: var(--azul-escuro); }
+.detail-status-save:disabled { background: #b0bec5; cursor: not-allowed; }
+.status-feedback { font-size: 12px; }
+.status-feedback.success { color: var(--verde); }
+.status-feedback.error { color: var(--vermelho); }
 .detail-label {
   color: #78909c;
   font-size: 11px;
