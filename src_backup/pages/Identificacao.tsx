@@ -37,7 +37,7 @@ export default function Identificacao() {
       <div className="topbar">
         <div>
           <h1>TriagemFácil</h1>
-          <p>sistema de triagem inteligente</p>
+          <p>Sistema de Triagem Inteligente</p>
         </div>
       </div>
 
@@ -78,7 +78,6 @@ export default function Identificacao() {
         </div>
 
         <div className="help-box">
-          <span>ℹ️</span>
           <span>Precisa de ajuda? Chame um atendente — ele pode preencher por você.</span>
         </div>
 

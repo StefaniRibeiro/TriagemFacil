@@ -91,7 +91,7 @@ export default function Dashboard() {
       <div className="topbar" style={{ borderRadius: 10, marginBottom: 20 }}>
         <div>
           <h1>TriagemFácil</h1>
-          <p>sistema de triagem inteligente</p>
+          <p>Sistema de Triagem Inteligente</p>
         </div>
         <div className="dashboard-header-actions">
           <span className="dashboard-user">

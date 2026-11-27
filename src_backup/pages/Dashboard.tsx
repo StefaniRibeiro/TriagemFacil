@@ -37,7 +37,7 @@ export default function Dashboard() {
       <div className="topbar" style={{ borderRadius: 10, marginBottom: 20 }}>
         <div>
           <h1>TriagemFácil</h1>
-          <p>sistema de triagem inteligente</p>
+          <p>Sistema de Triagem Inteligente</p>
         </div>
         <span style={{ fontSize: 13 }}>
           {sessionStorage.getItem('nome')} — {sessionStorage.getItem('perfil')}
