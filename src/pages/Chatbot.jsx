@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ChatbotApi, TriagemApi } from '../api/api.js';
 
-const MENSAGEM_FINAL = 'Sua triagem foi concluída. Aguarde chamar pelo seu nome';
-const MENSAGEM_COLETA_CONCLUIDA = 'Já registrei as informações principais. Toque em \"Concluir triagem\" para enviar ao profissional.';
+const MENSAGENS_FINAIS = new Set([
+  'Sua triagem foi concluída e enviada aos profissionais de saúde. Aguarde chamar pelo seu nome',
+  'Sua triagem foi concluída. Aguarde chamar pelo seu nome'
+]);
+const PREFIXO_MENSAGEM_COLETA_CONCLUIDA = 'Já registrei as informações principais.';
 
 export default function Chatbot() {
   const { triagemId } = useParams();
@@ -28,8 +31,8 @@ export default function Chatbot() {
 
     ChatbotApi.historico(triagemId).then(({ data }) => {
       setMensagens(data);
-      setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_FINAL));
-      setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_COLETA_CONCLUIDA));
+      setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && MENSAGENS_FINAIS.has(m.conteudo)));
+      setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo.startsWith(PREFIXO_MENSAGEM_COLETA_CONCLUIDA)));
     });
   }, [triagemId, state?.mensagemInicial]);
 
