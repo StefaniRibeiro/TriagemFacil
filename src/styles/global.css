@@ -191,19 +191,22 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
 }
 
 .dashboard-page {
-  width: min(100%, 1200px);
-  margin: 0 auto;
-  padding: 24px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .dashboard-page > .topbar {
-  position: relative;
-  left: 50%;
-  width: 100vw;
+  width: 100%;
   max-width: none;
   margin-bottom: 20px;
   border-radius: 0;
-  transform: translateX(-50%);
+}
+
+.dashboard-page-content {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 24px;
 }
 
 .dashboard-live-status {
@@ -597,7 +600,7 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
   .chat-input-bar input { min-width: 0; }
   .chat-input-bar button { padding: 0 14px; }
 
-  .dashboard-page { padding: 12px; }
+  .dashboard-page-content { padding: 12px; }
   .dashboard-live-status { justify-content: space-between; margin: -2px 0 10px; }
   .dashboard-page > .topbar { border-radius: 0; }
   .dashboard-header-actions { flex-wrap: wrap; justify-content: flex-end; }

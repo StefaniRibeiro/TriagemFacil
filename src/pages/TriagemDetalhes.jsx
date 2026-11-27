@@ -127,6 +127,7 @@ export default function TriagemDetalhes() {
         </div>
       </header>
 
+      <div className="dashboard-page-content">
       {carregando && <div className="card detail-state">Carregando triagem...</div>}
       {!carregando && erro && <div className="card detail-state detail-error" role="alert">{erro}</div>}
 
@@ -227,6 +228,7 @@ export default function TriagemDetalhes() {
           </div>
         </>
       )}
+      </div>
     </main>
   );
 }

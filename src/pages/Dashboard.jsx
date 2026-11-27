@@ -101,6 +101,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <div className="dashboard-page-content">
       <div className="dashboard-live-status">
         <span role="status">
           {erroAtualizacao || (atualizadoEm
@@ -188,6 +189,7 @@ export default function Dashboard() {
           </tbody>
         </table>
         </div>
+      </div>
       </div>
     </main>
   );
