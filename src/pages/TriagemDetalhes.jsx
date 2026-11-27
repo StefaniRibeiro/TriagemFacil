@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { DashboardApi } from '../api/api.js';
+import LogoutButton from '../components/LogoutButton.jsx';
 
 const ROTULOS_PRIORIDADE = {
   Emergente: 'Vermelho — Emergente',
@@ -66,7 +67,10 @@ export default function TriagemDetalhes() {
           <h1>Detalhes da triagem</h1>
           <p>TriagemFácil — painel profissional</p>
         </div>
-        <Link className="detail-back-link" to="/dashboard">Voltar ao painel</Link>
+        <div className="dashboard-header-actions">
+          <Link className="detail-back-link" to="/dashboard">Voltar ao painel</Link>
+          <LogoutButton />
+        </div>
       </header>
 
       {carregando && <div className="card detail-state">Carregando triagem...</div>}

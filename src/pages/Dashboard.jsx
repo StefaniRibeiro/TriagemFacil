@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardApi } from '../api/api.js';
+import LogoutButton from '../components/LogoutButton.jsx';
 
 const FILTROS = [
   { chave: null, label: 'Todos' },
@@ -55,9 +56,12 @@ export default function Dashboard() {
           <h1>TriagemFácil</h1>
           <p>sistema de triagem inteligente</p>
         </div>
-        <span style={{ fontSize: 13 }}>
-          {sessionStorage.getItem('nome')} — {sessionStorage.getItem('perfil')}
-        </span>
+        <div className="dashboard-header-actions">
+          <span className="dashboard-user">
+            {sessionStorage.getItem('nome')} — {sessionStorage.getItem('perfil')}
+          </span>
+          <LogoutButton />
+        </div>
       </div>
 
       {resumo && (

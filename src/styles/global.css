@@ -185,6 +185,25 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
 .dashboard-table-wrap { width: 100%; }
 
 .dashboard-detail-topbar { border-radius: 10px; margin-bottom: 20px; }
+.dashboard-header-actions { display: flex; align-items: center; gap: 10px; }
+.dashboard-user { font-size: 13px; text-align: right; }
+.logout-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  background: transparent;
+  color: white;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.logout-button:hover { background: rgba(255, 255, 255, 0.14); }
+.logout-button:focus-visible, .detail-back-link:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
 .detail-back-link {
   color: white;
   font-size: 13px;
@@ -478,7 +497,8 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
 
   .dashboard-page { padding: 12px; }
   .dashboard-page > .topbar { border-radius: 10px; }
-  .dashboard-page > .topbar > span { text-align: right; overflow-wrap: anywhere; }
+  .dashboard-header-actions { flex-wrap: wrap; justify-content: flex-end; }
+  .dashboard-user { overflow-wrap: anywhere; }
   .dashboard-detail-topbar { align-items: flex-start; }
   .detail-back-link { padding: 7px 9px; font-size: 12px; }
   .detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
