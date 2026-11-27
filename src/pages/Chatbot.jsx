@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ChatbotApi, TriagemApi } from '../api/api.js';
 
-const MENSAGEM_FINAL = 'Triagem realizada. Aguarde na unidade; a equipe chamará você pelo nome.';
+const MENSAGEM_FINAL = 'Sua triagem foi concluída. Aguarde chamar pelo seu nome';
 
 export default function Chatbot() {
   const { triagemId } = useParams();
