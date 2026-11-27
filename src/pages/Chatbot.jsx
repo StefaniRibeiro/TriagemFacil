@@ -91,9 +91,8 @@ export default function Chatbot() {
     <div className="app-container chat-app" style={{ height: '100vh' }}>
       <div className="topbar chat-topbar">
         <div className="chat-brand">
-          <span className="chat-avatar" aria-hidden="true">+</span>
-        <div>
-          <h1>Assistente de triagem</h1>
+          <div>
+            <h1>Assistente de triagem</h1>
             <p><span className="chat-online-dot" aria-hidden="true" /> Atendimento digital da unidade</p>
           </div>
         </div>
