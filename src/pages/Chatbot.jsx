@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ChatbotApi, TriagemApi } from '../api/api.js';
 
 const MENSAGEM_FINAL = 'Sua triagem foi concluída. Aguarde chamar pelo seu nome';
+const MENSAGEM_COLETA_CONCLUIDA = 'Já registrei as informações principais. Toque em \"Concluir triagem\" para enviar ao profissional.';
 
 export default function Chatbot() {
   const { triagemId } = useParams();
@@ -14,6 +15,7 @@ export default function Chatbot() {
   const [enviando, setEnviando] = useState(false);
   const [finalizando, setFinalizando] = useState(false);
   const [triagemConcluida, setTriagemConcluida] = useState(false);
+  const [coletaConcluida, setColetaConcluida] = useState(false);
   const fimRef = useRef(null);
 
   const paciente = state?.paciente;
@@ -22,6 +24,7 @@ export default function Chatbot() {
     ChatbotApi.historico(triagemId).then(({ data }) => {
       setMensagens(data);
       setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_FINAL));
+      setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_COLETA_CONCLUIDA));
     });
   }, [triagemId]);
 
@@ -30,7 +33,7 @@ export default function Chatbot() {
   }, [mensagens]);
 
   async function enviar(conteudo) {
-    if (!conteudo.trim() || enviando || triagemConcluida) return;
+    if (!conteudo.trim() || enviando || triagemConcluida || coletaConcluida) return;
     setEnviando(true);
     setTexto('');
 
@@ -38,6 +41,7 @@ export default function Chatbot() {
 
     try {
       const { data } = await ChatbotApi.enviarMensagem(triagemId, conteudo);
+      if (data.coletaConcluida) setColetaConcluida(true);
       setMensagens((prev) => [
         ...prev,
         { origem: 'Chatbot', conteudo: data.respostaChatbot, timestamp: new Date() }
@@ -110,9 +114,9 @@ export default function Chatbot() {
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && enviar(texto)}
-          disabled={triagemConcluida}
+          disabled={triagemConcluida || coletaConcluida}
         />
-        <button onClick={() => enviar(texto)} disabled={enviando || triagemConcluida}>Enviar</button>
+        <button onClick={() => enviar(texto)} disabled={enviando || triagemConcluida || coletaConcluida}>Enviar</button>
       </div>
 
       <div style={{ padding: '0 16px 16px' }}>
