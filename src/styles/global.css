@@ -191,7 +191,7 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
 }
 
 .dashboard-page {
-  width: min(100%, 960px);
+  width: min(100%, 1200px);
   margin: 0 auto;
   padding: 24px;
 }
