@@ -196,6 +196,16 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
   padding: 24px;
 }
 
+.dashboard-page > .topbar {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: none;
+  margin-bottom: 20px;
+  border-radius: 0;
+  transform: translateX(-50%);
+}
+
 .dashboard-live-status {
   display: flex;
   justify-content: flex-end;
@@ -589,7 +599,7 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
 
   .dashboard-page { padding: 12px; }
   .dashboard-live-status { justify-content: space-between; margin: -2px 0 10px; }
-  .dashboard-page > .topbar { border-radius: 10px; }
+  .dashboard-page > .topbar { border-radius: 0; }
   .dashboard-header-actions { flex-wrap: wrap; justify-content: flex-end; }
   .dashboard-user { overflow-wrap: anywhere; }
   .dashboard-detail-topbar { align-items: flex-start; }

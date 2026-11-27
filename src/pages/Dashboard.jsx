@@ -88,7 +88,7 @@ export default function Dashboard() {
 
   return (
     <main className="dashboard-page">
-      <div className="topbar" style={{ borderRadius: 10, marginBottom: 20 }}>
+      <div className="topbar">
         <div>
           <h1>TriagemFácil</h1>
           <p>Sistema de Triagem Inteligente</p>
