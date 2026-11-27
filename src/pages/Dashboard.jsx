@@ -114,7 +114,7 @@ export default function Dashboard() {
                   <strong>{t.pacienteNome}</strong>
                   <br /><small>{t.pacienteIdade ? `${t.pacienteIdade} anos` : ''}</small>
                 </td>
-                <td data-label="Horário">{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td data-label="Horário">{new Date(t.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' })}</td>
                 <td data-label="Sintoma">{t.principalSintoma ?? '—'}</td>
                 <td data-label="Classificação sugerida">
                   {t.prioridade ? <>

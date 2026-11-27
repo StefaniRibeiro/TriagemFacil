@@ -20,7 +20,8 @@ const ROTULOS_STATUS = {
 function formatarData(data) {
   return new Date(data).toLocaleString('pt-BR', {
     dateStyle: 'short',
-    timeStyle: 'short'
+    timeStyle: 'short',
+    timeZone: 'America/Sao_Paulo'
   });
 }
 

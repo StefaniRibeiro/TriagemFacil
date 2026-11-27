@@ -89,12 +89,15 @@ export default function Chatbot() {
 
   return (
     <div className="app-container chat-app" style={{ height: '100vh' }}>
-      <div className="topbar">
+      <div className="topbar chat-topbar">
+        <div className="chat-brand">
+          <span className="chat-avatar" aria-hidden="true">+</span>
         <div>
           <h1>Assistente de triagem</h1>
-          <p>Online — respondendo agora</p>
+            <p><span className="chat-online-dot" aria-hidden="true" /> Atendimento digital da unidade</p>
+          </div>
         </div>
-        {paciente && <span style={{ fontSize: 12 }}>{paciente.nome?.split(' ')[0]}</span>}
+        {paciente && <span className="chat-patient-name">Olá, {paciente.nome?.split(' ')[0]}</span>}
       </div>
 
       <div className="chat-window">
@@ -103,14 +106,14 @@ export default function Chatbot() {
             {m.conteudo}
           </div>
         ))}
-        {enviando && <div className="bubble chatbot">digitando...</div>}
+        {enviando && <div className="bubble chatbot typing-indicator">Assistente digitando</div>}
         <div ref={fimRef} />
       </div>
 
       <div className="chat-input-bar">
         <input
           type="text"
-          placeholder="Digite sua resposta..."
+          placeholder="Escreva sua resposta..."
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && enviar(texto)}
