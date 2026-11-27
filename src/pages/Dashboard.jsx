@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardApi } from '../api/api.js';
 import LogoutButton from '../components/LogoutButton.jsx';
@@ -25,25 +25,54 @@ export default function Dashboard() {
   const [triagens, setTriagens] = useState([]);
   const [filtro, setFiltro] = useState(null);
   const [busca, setBusca] = useState('');
+  const [atualizadoEm, setAtualizadoEm] = useState(null);
+  const [atualizando, setAtualizando] = useState(false);
+  const [erroAtualizacao, setErroAtualizacao] = useState('');
+  const requisicaoEmAndamento = useRef(false);
   const navigate = useNavigate();
+
+  const carregarDados = useCallback(async () => {
+    if (requisicaoEmAndamento.current) return;
+    requisicaoEmAndamento.current = true;
+    setAtualizando(true);
+
+    try {
+      const [resumoResponse, triagensResponse] = await Promise.all([
+        DashboardApi.resumo(),
+        DashboardApi.listarTriagens(filtro)
+      ]);
+      setResumo(resumoResponse.data);
+      setTriagens(triagensResponse.data);
+      setAtualizadoEm(new Date());
+      setErroAtualizacao('');
+    } catch {
+      setErroAtualizacao('Não foi possível atualizar agora. Tentaremos novamente.');
+    } finally {
+      requisicaoEmAndamento.current = false;
+      setAtualizando(false);
+    }
+  }, [filtro]);
 
   useEffect(() => {
     if (!sessionStorage.getItem('token')) {
       navigate('/login');
       return;
     }
-    const carregarResumo = () => DashboardApi.resumo().then(({ data }) => setResumo(data));
-    carregarResumo();
-    const atualizacao = setInterval(carregarResumo, 10000);
-    return () => clearInterval(atualizacao);
-  }, [navigate]);
 
-  useEffect(() => {
-    const carregarTriagens = () => DashboardApi.listarTriagens(filtro).then(({ data }) => setTriagens(data));
-    carregarTriagens();
-    const atualizacao = setInterval(carregarTriagens, 10000);
-    return () => clearInterval(atualizacao);
-  }, [filtro]);
+    carregarDados();
+    const atualizacao = window.setInterval(carregarDados, 5000);
+    const atualizarAoVoltar = () => {
+      if (document.visibilityState === 'visible') carregarDados();
+    };
+    window.addEventListener('focus', atualizarAoVoltar);
+    document.addEventListener('visibilitychange', atualizarAoVoltar);
+
+    return () => {
+      window.clearInterval(atualizacao);
+      window.removeEventListener('focus', atualizarAoVoltar);
+      document.removeEventListener('visibilitychange', atualizarAoVoltar);
+    };
+  }, [navigate, carregarDados]);
 
   const triagensFiltradas = triagens.filter((t) =>
     t.pacienteNome.toLowerCase().includes(busca.toLowerCase())
@@ -62,6 +91,17 @@ export default function Dashboard() {
           </span>
           <LogoutButton />
         </div>
+      </div>
+
+      <div className="dashboard-live-status">
+        <span role="status">
+          {erroAtualizacao || (atualizadoEm
+            ? `Atualizado às ${atualizadoEm.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`
+            : 'Carregando dados...')}
+        </span>
+        <button className="dashboard-refresh-button" type="button" onClick={carregarDados} disabled={atualizando}>
+          {atualizando ? 'Atualizando...' : 'Atualizar'}
+        </button>
       </div>
 
       {resumo && (

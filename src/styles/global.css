@@ -195,6 +195,28 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
   padding: 24px;
 }
 
+.dashboard-live-status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin: -8px 0 12px;
+  color: #78909c;
+  font-size: 12px;
+}
+.dashboard-refresh-button {
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: white;
+  color: var(--azul-primario);
+  padding: 7px 11px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.dashboard-refresh-button:hover:not(:disabled) { background: var(--azul-claro); }
+.dashboard-refresh-button:disabled { opacity: .65; cursor: wait; }
+
 .dashboard-toolbar {
   display: flex;
   justify-content: space-between;
@@ -529,6 +551,7 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
   .chat-input-bar button { padding: 0 14px; }
 
   .dashboard-page { padding: 12px; }
+  .dashboard-live-status { justify-content: space-between; margin: -2px 0 10px; }
   .dashboard-page > .topbar { border-radius: 10px; }
   .dashboard-header-actions { flex-wrap: wrap; justify-content: flex-end; }
   .dashboard-user { overflow-wrap: anywhere; }
