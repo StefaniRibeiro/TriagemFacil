@@ -149,9 +149,10 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
   width: 1.2em;
   overflow: hidden;
   vertical-align: bottom;
+  /* Keep the full space reserved so the bubble never changes width. */
   animation: typing-dots 1.2s steps(4, end) infinite;
 }
-@keyframes typing-dots { from { width: 0; } to { width: 1.2em; } }
+@keyframes typing-dots { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
 .chat-input-bar {
   display: flex;

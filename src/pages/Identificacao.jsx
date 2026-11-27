@@ -20,7 +20,9 @@ export default function Identificacao() {
     setCarregando(true);
     try {
       const { data } = await PacienteApi.identificar(cpf || null, cns || null);
-      navigate(`/triagem/${data.triagemId}`, { state: { paciente: data.dados } });
+      navigate(`/triagem/${data.triagemId}`, {
+        state: { paciente: data.dados, mensagemInicial: data.mensagemInicial }
+      });
     } catch (e) {
       setErro(
         e.response?.status === 404

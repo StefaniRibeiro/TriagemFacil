@@ -21,12 +21,17 @@ export default function Chatbot() {
   const paciente = state?.paciente;
 
   useEffect(() => {
+    if (state?.mensagemInicial) {
+      setMensagens([{ origem: 'Chatbot', conteudo: state.mensagemInicial, timestamp: new Date() }]);
+      return;
+    }
+
     ChatbotApi.historico(triagemId).then(({ data }) => {
       setMensagens(data);
       setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_FINAL));
       setColetaConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_COLETA_CONCLUIDA));
     });
-  }, [triagemId]);
+  }, [triagemId, state?.mensagemInicial]);
 
   useEffect(() => {
     fimRef.current?.scrollIntoView({ behavior: 'smooth' });
