@@ -89,9 +89,26 @@ export default function TriagemDetalhes() {
       setStatusSelecionado(data.status);
       setMensagemStatus('Status atualizado.');
     } catch (e) {
-      setErroStatus(typeof e.response?.data === 'string'
-        ? e.response.data
-        : 'Não foi possível atualizar o status. Tente novamente.');
+      const statusHttp = e.response?.status;
+      const resposta = e.response?.data;
+      const detalhe = typeof resposta === 'string'
+        ? resposta
+        : resposta?.detail || resposta?.title || resposta?.message;
+
+      if (statusHttp === 401) {
+        sessionStorage.removeItem('token');
+        navigate('/login', { replace: true });
+      } else if (statusHttp === 403) {
+        setErroStatus('Seu perfil não tem permissão para alterar o status.');
+      } else if (detalhe) {
+        setErroStatus(detalhe);
+      } else if (statusHttp >= 500) {
+        setErroStatus('A API não conseguiu gravar o status. Se escolheu "Em atendimento" ou "Atendida", aplique a migração 2026-11-27_status_atendimento.sql no banco de produção.');
+      } else if (statusHttp) {
+        setErroStatus(`A API recusou a alteração (HTTP ${statusHttp}). Confira o status atual da triagem e tente novamente.`);
+      } else {
+        setErroStatus('Não foi possível conectar à API. Verifique a conexão e tente novamente.');
+      }
     } finally {
       setSalvandoStatus(false);
     }
