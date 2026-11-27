@@ -119,7 +119,15 @@ export default function Dashboard() {
                   </> : 'Aguardando dados'}
                 </td>
                 <td data-label="Status">{t.status === 'EmAndamento' ? 'Em triagem' : t.status}</td>
-                <td data-label="Ação"><button className="filtro-btn">Ver</button></td>
+                <td data-label="Ação">
+                  <button
+                    className="filtro-btn"
+                    onClick={() => navigate(`/dashboard/triagens/${t.id}`)}
+                    aria-label={`Ver detalhes da triagem ${t.id}`}
+                  >
+                    Ver
+                  </button>
+                </td>
               </tr>
             ))}
             {triagensFiltradas.length === 0 && (

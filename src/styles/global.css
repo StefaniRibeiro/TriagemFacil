@@ -175,6 +175,54 @@ button.primary:disabled { background: #b0bec5; cursor: not-allowed; }
 
 .dashboard-table-wrap { width: 100%; }
 
+.dashboard-detail-topbar { border-radius: 10px; margin-bottom: 20px; }
+.detail-back-link {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+.detail-back-link:hover { background: rgba(255,255,255,.12); }
+.detail-state { margin-top: 16px; }
+.detail-error { color: var(--vermelho); }
+.detail-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.detail-summary > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.detail-label {
+  color: #78909c;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+.detail-patient-name { font-size: 18px; }
+.detail-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+.detail-section { min-width: 0; }
+.detail-section h2 { margin: 0 0 14px; font-size: 17px; color: var(--azul-escuro); }
+.detail-section h3 { margin: 22px 0 10px; font-size: 14px; }
+.detail-section p { line-height: 1.5; overflow-wrap: anywhere; }
+.detail-symptoms { list-style: none; padding: 0; margin: 0; }
+.detail-symptoms li { display: flex; flex-direction: column; gap: 5px; padding: 10px 0; border-top: 1px solid var(--borda); overflow-wrap: anywhere; }
+.detail-symptoms li span, .detail-muted { color: #607d8b; font-size: 13px; }
+.detail-conversation { display: flex; flex-direction: column; gap: 10px; max-height: 620px; overflow-y: auto; padding-right: 4px; }
+.detail-message { background: var(--azul-claro); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.detail-message.from-patient { background: #f1f3f5; }
+.detail-message > div { display: flex; justify-content: space-between; gap: 10px; color: var(--azul-escuro); font-size: 12px; }
+.detail-message time { color: #78909c; font-size: 11px; text-align: right; }
+.detail-message p { margin: 7px 0 0; white-space: pre-wrap; }
+
 .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
 .kpi { background: var(--branco); border: 1px solid var(--borda); border-radius: 10px; padding: 12px; text-align: center; }
 .kpi .valor { font-size: 22px; font-weight: 700; color: var(--azul-primario); }
@@ -252,6 +300,11 @@ th { color: #78909c; font-weight: 600; font-size: 12px; text-transform: uppercas
   .dashboard-page { padding: 12px; }
   .dashboard-page > .topbar { border-radius: 10px; }
   .dashboard-page > .topbar > span { text-align: right; overflow-wrap: anywhere; }
+  .dashboard-detail-topbar { align-items: flex-start; }
+  .detail-back-link { padding: 7px 9px; font-size: 12px; }
+  .detail-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .detail-columns { grid-template-columns: minmax(0, 1fr); }
+  .detail-conversation { max-height: none; }
   .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .kpi { padding: 10px 6px; }
   .kpi .valor { font-size: 20px; }
