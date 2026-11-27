@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ChatbotApi, TriagemApi } from '../api/api.js';
 
+const MENSAGEM_FINAL = 'Triagem realizada. Aguarde na unidade; a equipe chamará você pelo nome.';
+
 export default function Chatbot() {
   const { triagemId } = useParams();
   const { state } = useLocation();
@@ -11,12 +13,16 @@ export default function Chatbot() {
   const [texto, setTexto] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [finalizando, setFinalizando] = useState(false);
+  const [triagemConcluida, setTriagemConcluida] = useState(false);
   const fimRef = useRef(null);
 
   const paciente = state?.paciente;
 
   useEffect(() => {
-    ChatbotApi.historico(triagemId).then(({ data }) => setMensagens(data));
+    ChatbotApi.historico(triagemId).then(({ data }) => {
+      setMensagens(data);
+      setTriagemConcluida(data.some((m) => m.origem === 'Chatbot' && m.conteudo === MENSAGEM_FINAL));
+    });
   }, [triagemId]);
 
   useEffect(() => {
@@ -24,7 +30,7 @@ export default function Chatbot() {
   }, [mensagens]);
 
   async function enviar(conteudo) {
-    if (!conteudo.trim() || enviando) return;
+    if (!conteudo.trim() || enviando || triagemConcluida) return;
     setEnviando(true);
     setTexto('');
 
@@ -64,7 +70,12 @@ export default function Chatbot() {
     try {
       const sintomas = extrairSintomas();
       const { data } = await TriagemApi.finalizar(triagemId, sintomas, null);
-      navigate('/', { state: { concluido: true, prioridade: data.prioridadeSugerida } });
+      setTriagemConcluida(true);
+      setMensagens((prev) => [...prev, {
+        origem: 'Chatbot',
+        conteudo: data.mensagemFinal || MENSAGEM_FINAL,
+        timestamp: new Date()
+      }]);
     } catch {
       alert('Não foi possível finalizar a triagem agora. Tente novamente.');
     } finally {
@@ -99,14 +110,19 @@ export default function Chatbot() {
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && enviar(texto)}
+          disabled={triagemConcluida}
         />
-        <button onClick={() => enviar(texto)} disabled={enviando}>Enviar</button>
+        <button onClick={() => enviar(texto)} disabled={enviando || triagemConcluida}>Enviar</button>
       </div>
 
       <div style={{ padding: '0 16px 16px' }}>
-        <button className="primary" onClick={finalizarTriagem} disabled={finalizando || mensagens.length < 2}>
-          {finalizando ? 'Finalizando...' : 'Concluir triagem'}
-        </button>
+        {triagemConcluida ? (
+          <button className="primary" onClick={() => navigate('/')}>Voltar ao início</button>
+        ) : (
+          <button className="primary" onClick={finalizarTriagem} disabled={finalizando || enviando || mensagens.length < 2}>
+            {finalizando ? 'Finalizando...' : 'Concluir triagem'}
+          </button>
+        )}
       </div>
     </div>
   );
